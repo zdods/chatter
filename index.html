@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<![endif]-->
+    <title>chatter</title>
+    <!-- styling -->
+    <style>
+        *,
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        html {
+            padding-bottom: 60px;
+        }
+
+        div .message-left {
+            float: left;
+            background-color: #48dbfb;
+        }
+
+        div .message-right {
+            float: right;
+            background-color: #1dd1a1;
+        }
+
+        div .message-right,
+        div .message-left {
+            color: white;
+            clear: both;
+            width: 60vw;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+        }
+
+        #sendMessage,
+        #messages {
+            display: none;
+        }
+
+        #sendMessage,
+        #setUsername {
+            position: fixed;
+            height: 50px;
+            background: #54a0ff;
+            width: 100vw;
+        }
+
+        #sendMessage {
+            bottom: 0;
+        }
+
+        #sendMessage #m,
+        #setUsername #u {
+            height: inherit;
+            font-size: 20px;
+            width: 90vw;
+            outline: none;
+            padding: 5px;
+        }
+
+        #sendMessage input[type^="submit"],
+        #setUsername input[type^="submit"] {
+            float: right;
+            width: 10vw;
+            border: none;
+            height: inherit;
+            color: white;
+            background: #54a0ff;
+            font-size: 16px;
+        }
+
+        #currentUser {
+            width: 100vw;
+            background: #54a0ff;
+            color: white;
+            height: 30px;
+            text-align: center;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- username form -->
+    <form id="setUsername">
+        <input id="u" type="text" placeholder="username" maxlength="20">
+        <input type="submit" value="Sign in">
+    </form>
+    <!-- message form -->
+    <form id="sendMessage">
+        <input id="m" type="text" placeholder="message" disabled>
+        <input type="Submit" value="&#9654;" disabled>
+    </form>
+    <!-- get socket/jquery -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        $(function () {
+            var socket = io();
+            var currentUser;
+            var userExists = false;
+
+            // when message submitted
+            $('#sendMessage').submit(function () {
+                var msgData = new Object();
+                msgData.user = currentUser;
+                msgData.msg = $('#m').val();
+                if (msgData.msg) {
+                    socket.emit('chat message', msgData);
+                }
+                $('#m').val('');
+                return false;
+            });
+            // when username submitted
+            $('#setUsername').submit(function () {
+                currentUser = $('#u').val();
+                var checkData = new Object();
+                checkData.sid = socket.id;
+                checkData.user = currentUser;
+
+                socket.emit('check users', checkData);
+
+                return false;
+            });
+            // when message received from app.js
+            socket.on('chat message', function (msgData) {
+                if (msgData.user == currentUser) {
+                    $('#messages').append('<div class="message-right">' + msgData.msg +
+                        '</div><br>');
+                } else {
+                    $('#messages').append('<div class="message-left">(' + msgData.user + '): ' +
+                        msgData.msg +
+                        '</div><br>');
+                }
+                $("html, body").animate({
+                    scrollTop: $(document).height()
+                }, 1000);
+            });
+            // when user check boolean received
+            socket.on('check users', function (flag) {
+                userExists = flag;
+                if (!userExists) {
+                    $('body').prepend('<div id="currentUser">Signed in: ' + currentUser + '</div>')
+                    $('#setUsername').remove();
+                    $('#sendMessage').get(0).style.display = 'block';
+                    $('#messages').get(0).style.display = 'block';
+                    $('#sendMessage').find('input').prop('disabled', false);
+                } else {
+                    alert('Someone in the lobby is already using that name, please enter a new one.');
+                    userExists = false;
+                }
+                socket.emit('register user', currentUser);
+            });
+
+        });
+    </script>
+    <!-- where messages are to be printed -->
+    <div id="messages"></div>
+</body>
+
+</html>

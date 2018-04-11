@@ -1,0 +1,17 @@
+{
+  "name": "chatter",
+  "version": "1.0.0",
+  "description": "my first app in Node",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zachary Dods",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "jshint": "^2.9.5",
+    "socket.io": "^2.0.4"
+  },
+  "devDependencies": {}
+}
