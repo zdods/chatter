@@ -1,0 +1,78 @@
+*,
+html,
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+html {
+    padding-bottom: 60px;
+}
+
+div .message-left {
+    float: left;
+    background-color: #48dbfb;
+}
+
+div .message-right {
+    float: right;
+    background-color: #1dd1a1;
+}
+
+div .message-right,
+div .message-left {
+    color: white;
+    clear: both;
+    width: 40vw;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+#sendMessage,
+#messages {
+    display: none;
+}
+
+#sendMessage,
+#setUsername {
+    position: fixed;
+    height: 50px;
+    background: #54a0ff;
+    width: 100vw;
+}
+
+#sendMessage {
+    bottom: 0;
+}
+
+#sendMessage #m,
+#setUsername #u {
+    height: inherit;
+    font-size: 20px;
+    width: 90vw;
+    outline: none;
+    padding: 5px;
+}
+
+#sendMessage input[type^="submit"],
+#setUsername input[type^="submit"] {
+    float: right;
+    width: 10vw;
+    border: none;
+    height: inherit;
+    color: white;
+    background: #54a0ff;
+    font-size: 16px;
+}
+
+#currentUser {
+    width: 100vw;
+    background: #54a0ff;
+    color: white;
+    height: 30px;
+    text-align: center;
+    padding: 5px;
+}

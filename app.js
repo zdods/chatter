@@ -6,6 +6,7 @@ const io = require('socket.io')(http);
 var client_user = Array();
 var currentUsers = Array();
 
+app.use(express.static(__dirname + '/'));
 // handle webpage request
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
