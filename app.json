@@ -1,6 +1,0 @@
-{
-    "name": "chatter",
-    "description": "a simple messaging app built in Node/Express",
-    "repository": "https://github.com/zdods/chatter",
-    "keywords": ["node", "express"]
-  }
