@@ -13,5 +13,8 @@
     "jshint": "^2.9.5",
     "socket.io": "^2.0.4"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "engines": {
+    "node": "9.10.0"
+  }
 }
