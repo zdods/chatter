@@ -12,8 +12,8 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 // testing port
-var port = process.env.PORT || 3000;
-http.listen(3000, () => {
+var port = process.env.PORT || 8080;
+http.listen(port, () => {
     console.log(`listening on port ${port}...`);
 });
 
